@@ -3,7 +3,8 @@ export interface Props {
   label: string
   value: string | number
   onChange: (val: any) => void
-  unit?: any
+  right?: any
+  left?: any
   type: string
 }
 const Field = (props: Props) => {
@@ -14,11 +15,16 @@ const Field = (props: Props) => {
       </div>
       <div className="field-body">
         <div className="field">
-          <p className="control has-icons-right">
+          <p className={`control ${props.right ? 'has-icons-right' : ''} ${props.left ? 'has-icons-left' : ''}`}>
             <input className="input" type={props.type} value={props.value} onChange={e => props.onChange((e.target as any).value)} />
-            {props.unit && (
+            {props.left && (
+              <span className="is-left icon">
+                {props.left}
+              </span>
+            )}
+            {props.right && (
               <span className="is-right icon">
-                {props.unit}
+                {props.right}
               </span>
             )}
           </p>

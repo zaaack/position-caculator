@@ -17,10 +17,6 @@ const DefaultState = {
   pricePerLot: 100000,
   /** 杠杆 */
   lever: 2000,
-  /** 每笔手数 */
-  lot: 0,
-  /** 保证金 */
-  pos: 0,
 }
 type State = typeof DefaultState
 const StateKey = 'state'
@@ -33,9 +29,6 @@ const App: React.FC = () => {
     setTimeout(() => {
       setState(s => {
         s = { ...s, [field]: format(v) }
-        s.lot = s.balance * (s.risk / 100) / (s.stopLossPoints * s.pointProfit)
-        s.lot = Math.round(s.lot * 100) / 100
-        s.pos = Number((s.pricePerLot * s.lot / s.lever).toFixed(2))
         if (timerRef.current) {
           clearTimeout(timerRef.current)
           timerRef.current = null
@@ -48,6 +41,11 @@ const App: React.FC = () => {
       })
     })
   }
+  /** 每笔手数 */
+  let lot = state.balance * (state.risk / 100) / (state.stopLossPoints * state.pointProfit)
+  lot = Math.round(lot * 100) / 100
+  /** 保证金 */
+  let pos = Number((state.pricePerLot * lot / state.lever).toFixed(2))
   return (
     <div className="container root">
       <h1 className="title">仓位计算器</h1>
@@ -57,7 +55,7 @@ const App: React.FC = () => {
             type="number"
             label="账户余额"
             value={state.balance}
-            unit="$"
+            left="$"
             onChange={update('balance')}
           />
         </div>
@@ -66,7 +64,7 @@ const App: React.FC = () => {
             type="number"
             label="每笔风险"
             value={state.risk}
-            unit="%"
+            right="%"
             onChange={update('risk')}
           />
         </div>
@@ -75,7 +73,7 @@ const App: React.FC = () => {
             type="number"
             label="每点收益"
             value={state.pointProfit}
-            unit="$"
+            left="$"
             onChange={update('pointProfit')}
           />
         </div>
@@ -84,7 +82,7 @@ const App: React.FC = () => {
             type="number"
             label="每手金额"
             value={state.pricePerLot}
-            unit="$"
+            left="$"
             onChange={update('pricePerLot')}
           />
         </div>
@@ -107,10 +105,10 @@ const App: React.FC = () => {
         <div className="column">
           <div className="notification is-primary">
             <div>
-              进场手数：<span className="result">{state.lot}</span>
+              进场手数：<span className="result">{lot}</span>手
             </div>
             <div>
-              进场保证金：<span className="result">{state.pos}</span> $
+              进场保证金：<span className="result">${pos}</span>
             </div>
           </div>
         </div>
