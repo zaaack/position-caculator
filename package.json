@@ -7,6 +7,7 @@
     "@types/node": "12.7.2",
     "@types/react": "16.9.2",
     "@types/react-dom": "16.8.5",
+    "bulma": "^0.7.5",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-scripts": "3.1.1",
@@ -15,9 +16,12 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "predeploy": "npm run build",
+    "deploy": "foy deploy",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "homepage": "https://zaaack.github.io/position-caculator",
   "eslintConfig": {
     "extends": "react-app"
   },
@@ -32,5 +36,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "foy": "^0.1.29",
+    "gh-pages": "^2.1.1",
+    "ts-node": "^8.3.0"
   }
 }
