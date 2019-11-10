@@ -66,7 +66,7 @@ const App: React.FC = () => {
         <div className="column is-half">
           <Field
             type="number"
-            label="账户余额"
+            label="本金"
             value={state.balance}
             left="$"
             onChange={updateNum('balance')}
