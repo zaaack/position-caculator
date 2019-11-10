@@ -171,6 +171,7 @@ async function loadCurrency(currency: string) {
 
 export const UpdateExpireKey = 'updated_currency'
 export const CurrencyExchangeKey = 'currency_exchange'
+export const StateKey = 'state'
 ;(async () => {
   console.info(`跳过加载: BTC, OIL`)
   const lastUpdateTime = Cookie.get(UpdateExpireKey)
@@ -195,3 +196,11 @@ export const CurrencyExchangeKey = 'currency_exchange'
   store.set(CurrencyExchangeKey, SymbolRates)
   Cookie.set(UpdateExpireKey, String(Date.now()), {expires: 1 })
 })()
+
+window.onerror = (msg)=> {
+  if (typeof msg !== 'string') return
+  if (/Script error/.test(msg)) return
+  store.delete(CurrencyExchangeKey)
+  store.delete(StateKey)
+  window.location.reload()
+}

@@ -14,6 +14,9 @@ class Store {
   set<V>(key: string, val: V) {
     localStorage.setItem(key, JSON.stringify(val))
   }
+  delete(key: string) {
+    localStorage.removeItem(key)
+  }
 }
 
 export const store = new Store()

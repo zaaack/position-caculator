@@ -1,10 +1,10 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useImperativeHandle } from 'react'
 import logo from './logo.svg'
 import 'bulma/css/bulma.min.css'
 import './App.css'
 import Field from './Field'
 import { store } from './store';
-import { getPointProfit, Symbol, getCurrency, SymbolConfs, SymbolRates, Symbols, CurrencyExchangeKey } from './Consts';
+import { getPointProfit, Symbol, getCurrency, SymbolConfs, SymbolRates, Symbols, CurrencyExchangeKey, StateKey } from './Consts';
 
 
 const DefaultState = {
@@ -24,7 +24,6 @@ const DefaultState = {
   symbol: 'USDCHF' as Symbol,
 }
 type State = typeof DefaultState
-const StateKey = 'state'
 
 
 // Symbols.forEach(s => console.log(s, getPointProfit(s as Symbol)))
