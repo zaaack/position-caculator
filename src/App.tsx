@@ -4,6 +4,9 @@ import 'bulma/css/bulma.min.css'
 import './App.css'
 import Field from './Field'
 import { store } from './store';
+import { getPointProfit, Symbol, getCurrency, SymbolConfs, SymbolRates, Symbols, CurrencyExchangeKey } from './Consts';
+
+
 const DefaultState = {
   /** 每笔风险% */
   risk: 2,
@@ -11,21 +14,26 @@ const DefaultState = {
   balance: 500,
   /** 止损点数 */
   stopLossPoints: 100,
-  /** 每点价格 */
-  pointProfit: 10,
-  /** 每手金额 */
-  pricePerLot: 100000,
+  // /** 每点价格 */
+  // pointProfit: 10,
+  // /** 每手金额 */
+  // pricePerLot: ForexLotSize,
   /** 杠杆 */
   lever: 2000,
+  /** 货币对 */
+  symbol: 'USDCHF' as Symbol,
 }
 type State = typeof DefaultState
 const StateKey = 'state'
+
+
+// Symbols.forEach(s => console.log(s, getPointProfit(s as Symbol)))
 
 const App: React.FC = () => {
   let [state, setState] = useState(store.get<State>(StateKey, DefaultState))
   ;(window as any)['store'] = store
   let timerRef = useRef(null as any)
-  const update = (field: keyof (typeof state), format: (v: any) => any = Number) => (v: any) => {
+  const update = (field: keyof (typeof state), format: (v: any) => any = f => f) => (v: any) => {
     setTimeout(() => {
       setState(s => {
         s = { ...s, [field]: format(v) }
@@ -41,11 +49,17 @@ const App: React.FC = () => {
       })
     })
   }
+  const updateNum = (field: keyof (typeof state)) => update(field, Number)
+  /** 每点的点值(每点值多少美元) */
+  const pointProfit = getPointProfit(state.symbol)
   /** 每笔手数 */
-  let lot = state.balance * (state.risk / 100) / (state.stopLossPoints * state.pointProfit)
-  lot = Math.round(lot * 100) / 100
+  let lots = state.balance * (state.risk / 100) / (state.stopLossPoints * pointProfit)
+  lots = Math.round(lots * 100) / 100
+  const { basic, quote } = getCurrency(state.symbol)
+  /** 每手美元 */
+  const pricePerLot = SymbolConfs[state.symbol].lotSize * SymbolRates[basic]
   /** 保证金 */
-  let pos = Number((state.pricePerLot * lot / state.lever).toFixed(2))
+  let pos = Number((pricePerLot * lots / state.lever).toFixed(2))
   return (
     <div className="container root">
       <h1 className="title">仓位计算器</h1>
@@ -56,7 +70,7 @@ const App: React.FC = () => {
             label="账户余额"
             value={state.balance}
             left="$"
-            onChange={update('balance')}
+            onChange={updateNum('balance')}
           />
         </div>
         <div className="column is-half">
@@ -65,33 +79,31 @@ const App: React.FC = () => {
             label="每笔风险"
             value={state.risk}
             right="%"
-            onChange={update('risk')}
+            onChange={updateNum('risk')}
           />
         </div>
         <div className="column is-half">
           <Field
+            type="select"
+            label="货币对"
+            value={state.symbol}
+            options={Symbols.map(s => ({ value: s }))}
+            onChange={update('symbol')}
+          />
+          {/* <Field
             type="number"
             label="每点收益"
             value={state.pointProfit}
             left="$"
             onChange={update('pointProfit')}
-          />
-        </div>
-        <div className="column is-half">
-          <Field
-            type="number"
-            label="每手金额"
-            value={state.pricePerLot}
-            left="$"
-            onChange={update('pricePerLot')}
-          />
+          /> */}
         </div>
         <div className="column is-half">
           <Field
             type="number"
             label="杠杆"
             value={state.lever}
-            onChange={update('lever')}
+            onChange={updateNum('lever')}
           />
         </div>
         <div className="column is-half">
@@ -99,13 +111,32 @@ const App: React.FC = () => {
             type="number"
             label="止损点数"
             value={state.stopLossPoints}
-            onChange={update('stopLossPoints')}
+            onChange={updateNum('stopLossPoints')}
           />
         </div>
-        <div className="column">
+        <div className="column is-half">
+          {['BTCUSD', 'USOIL'].includes(state.symbol) && (() => {
+            const cur = state.symbol === 'BTCUSD' ? 'BTC' : 'OIL'
+            return (
+              <Field
+                type="number"
+                label={`${cur}兑美元`}
+                value={SymbolRates[cur]}
+                onChange={e => {
+                  setTimeout(() => {
+                    SymbolRates[cur] = e
+                    store.set(CurrencyExchangeKey, SymbolRates)
+                    setState({...state})
+                  })
+                }}
+              />
+            )
+          })()}
+        </div>
+        <div className="column is-full">
           <div className="notification is-primary">
             <div>
-              进场手数：<span className="result">{lot}</span>手
+              进场手数：<span className="result">{lots}</span>手
             </div>
             <div>
               进场保证金：<span className="result">${pos}</span>

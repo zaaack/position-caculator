@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/position-caculator/precache-manifest.f2491af47537ace7a071575f24d1b13a.js"
+  "/position-caculator/precache-manifest.659dbe318f6a362f70ee0168a25bdd3c.js"
 );
 
 self.addEventListener('message', (event) => {

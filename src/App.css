@@ -7,3 +7,11 @@
 .result {
   font-size: 30px;
 }
+
+.select {
+  width: 100%;
+}
+
+.select select {
+  width: 100%;
+}
