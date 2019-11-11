@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "5aa0cbfcc9359d5f327287e7de783861",
+    "revision": "dd00d18750a8d29cf7c8191ffba84a02",
     "url": "/position-caculator/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/position-caculator/static/css/2.2687cd84.chunk.css"
   },
   {
-    "revision": "b3ea9a96c4619e7edab7",
+    "revision": "0ebbe2fe6a2eeeb1729b",
     "url": "/position-caculator/static/css/main.43d3aefe.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/position-caculator/static/js/2.af0dacc8.chunk.js"
   },
   {
-    "revision": "b3ea9a96c4619e7edab7",
-    "url": "/position-caculator/static/js/main.dab6dfd2.chunk.js"
+    "revision": "0ebbe2fe6a2eeeb1729b",
+    "url": "/position-caculator/static/js/main.aac6acd9.chunk.js"
   },
   {
     "revision": "f03cacd1f4a5c871aaa4",

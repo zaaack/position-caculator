@@ -53,6 +53,14 @@ export const SymbolConfs = {
     tickSize: ForexTickSize,
     lotSize: ForexLotSize,
   },
+  NZDCHF: {
+    tickSize: ForexTickSize,
+    lotSize: ForexLotSize,
+  },
+  NZDJPY: {
+    tickSize: 0.01,
+    lotSize: ForexLotSize,
+  },
   EURUSD: {
     tickSize: ForexTickSize,
     lotSize: ForexLotSize,
@@ -110,7 +118,11 @@ export const SymbolConfs = {
     lotSize: ForexLotSize,
   },
   CADJPY: {
-    tickSize: ForexTickSize,
+    tickSize: 0.01,
+    lotSize: ForexLotSize,
+  },
+  CHFJPY: {
+    tickSize: 0.01,
     lotSize: ForexLotSize,
   },
 }
